@@ -1,17 +1,18 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
 namespace Business.Concrete
-{
+{ 
     public class CarManager : ICarService
     {
         ICarDal _carDal;        //Business'ın bildiği tek nesne
-
+        //İş kodları burda olur
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
@@ -52,6 +53,11 @@ namespace Business.Concrete
         public List<Car> GetCarsByColorId(int id)
         {
             return _carDal.GetAll(p=>p.ColorId==id);
+        }
+
+        public List<CarDetailDto> GetCarDetails()
+        {
+            return _carDal.GetCarDetails();
         }
     }
 }
