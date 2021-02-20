@@ -27,12 +27,12 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<List<Car>>(Messages.ErrorPrice);
             }
-            return new SuccessDataResult<List<Car>>(Messages.AddedCar);
+            return new SuccessDataResult<List<Car>>(Messages.Car+Messages.Added);
         }
 
         public IResult Delete(Car car,int carId)
         {     
-            return new SuccessDataResult<List<Car>>(Messages.DeletedCar);
+            return new SuccessDataResult<List<Car>>(Messages.Car + Messages.Deleted);
         }
 
         public IDataResult<List<Car>> GetAll()
@@ -41,7 +41,7 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<List<Car>>(Messages.Meintanance);
             }
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.CarListed);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.Car + Messages.Listed);
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
@@ -65,7 +65,7 @@ namespace Business.Concrete
 
         public IResult Update(Car car)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Car>>(Messages.Car + Messages.Updated);
         }
     }
 }

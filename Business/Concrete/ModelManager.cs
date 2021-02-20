@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.Entity_Framework;
 using Entities.Concrete;
@@ -17,35 +19,43 @@ namespace Business.Concrete
         {
             _modelDal = modelDal;
         }
-        public void Add(Model model)
+
+        public IResult Add(Model model)
         {
-            _modelDal.Add(model);
+            return new SuccessDataResult<List<Model>>(Messages.Model + Messages.Added);
         }
 
-        public void Delete(Model model)
+        public IResult Delete(Model model, int modelId)
         {
-            _modelDal.Delete(model);
+            return new SuccessDataResult<List<Model>>(Messages.Model + Messages.Deleted);
         }
 
-
-        public List<Model> GetAll(Expression<Func<Car, bool>> filter = null)
+        public IDataResult<List<Model>> GetAll()
         {
-            return _modelDal.GetAll();
+            return new SuccessDataResult<List<Model>>(_modelDal.GetAll());
         }
 
-        public List<Model> GetById(int modelId)
+        public IDataResult<List<Model>> GetById(Model model)
         {
-            return _modelDal.GetAll(m => m.ModelId == modelId);
+            if (Convert.ToInt32(model.ModelYear)<2000)
+            {
+                return new ErrorDataResult<List<Model>>(Messages.ErrorPrice);
+            }
+            return new SuccessDataResult<List<Model>>(_modelDal.GetAll(m => m.ModelId == model.ModelId));
         }
 
-        public List<ModelDetailDto> GetModelDetails()
+        public IDataResult<List<ModelDetailDto>> GetModelDetails()
         {
-            return _modelDal.GetModelDetails();
+            if (DateTime.Now.Hour == 1)
+            {
+                return new ErrorDataResult<List<ModelDetailDto>>(Messages.Meintanance);
+            }
+            return new SuccessDataResult<List<ModelDetailDto>>(_modelDal.GetModelDetails());
         }
 
-        public void Update(Model model)
+        public IResult Update(Model model)
         {
-            _modelDal.Update(model);
+            return new SuccessDataResult<List<Model>>(Messages.Model + Messages.Updated);
         }
     }
 }

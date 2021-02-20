@@ -10,7 +10,7 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarTest();
+            // CarTest();
             //ColorTest();
 
             // DtoTest1();
@@ -18,23 +18,38 @@ namespace ConsoleUI
             //ModelTest();
 
             //ModelDetails();
+
+            RentalTest();
+        }
+
+        private static void RentalTest()
+        {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            var result = rentalManager.GetAll();
+
+            foreach (var rental in result.Data)
+            {
+                Console.WriteLine(rental.RentDate);
+            }
         }
 
         private static void ModelDetails()
         {
             ModelManager modelManager = new ModelManager(new EfModelDal());
-            foreach (var detail in modelManager.GetModelDetails())
+            var result = modelManager.GetModelDetails();
+            foreach (var detail in result.Data)
             {
                 Console.WriteLine("ModelId : " + detail.ModelId + " ----- " + "BrandName : " + detail.BrandName);
                 Console.WriteLine("----");
-                Console.WriteLine("Join edildi");
+                Console.WriteLine("To the join is completed");
             }
         }
 
         private static void ModelTest()
         {
             ModelManager modelManager = new ModelManager(new EfModelDal());
-            foreach (var model in modelManager.GetAll())
+            var result = modelManager.GetAll();
+            foreach (var model in result.Data)
             {
                 Console.WriteLine(model.ModelYear);
             }
@@ -48,14 +63,15 @@ namespace ConsoleUI
             {
                 Console.WriteLine("CarId : " + detail.CarId + " ----- " + "ColorId : " + detail.ColorId);
                 Console.WriteLine("----");
-                Console.WriteLine("Join edildi");
+                Console.WriteLine("To the join is completed");
             }
         }
 
         private static void ColorTest()
         {
             ColorManager colorManager = new ColorManager(new EfColorDal());
-            foreach (var color in colorManager.GetAll())
+            var result = colorManager.GetAll();
+            foreach (var color in result.Data)
             {
                 Console.WriteLine(color.ColorName);
             }
