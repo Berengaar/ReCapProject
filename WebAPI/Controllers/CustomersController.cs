@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,6 +23,37 @@ namespace WebAPI.Controllers
         public IActionResult GetAllCustomers()
         {
             var result = _customerService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+        [HttpPost("addcustomer")]
+        public  IActionResult  AddCustomer(Customer customer)
+        {
+            var result = _customerService.Add(customer);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+        [HttpPost("updatecustomer")]
+        public IActionResult UpdateCustomer(Customer customer)
+        {
+            var result = _customerService.Update(customer);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("deletecustomer")]
+        public IActionResult DeleteCustomer(Customer customer)
+        {
+            var result = _customerService.Delete(customer);
             if (result.Success)
             {
                 return Ok(result);

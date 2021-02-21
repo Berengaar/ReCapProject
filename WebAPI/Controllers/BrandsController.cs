@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,6 +23,48 @@ namespace WebAPI.Controllers
         public IActionResult GetAllBrands()
         {
             var result = _brandService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("getbrandsbyid")]
+        public IActionResult GetBrandsById(int brandId)
+        {
+            var result = _brandService.GetById(brandId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+        [HttpPost("addbrand")]
+        public IActionResult AddBrand(Brand brand)
+        {
+            var result = _brandService.Add(brand);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("updatebrand")]
+        public IActionResult UpdateBrand(Brand brand)
+        {
+            var result = _brandService.Update(brand);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+        [HttpPost("deletebrand")]
+        public IActionResult DeleteBrand(Brand brand)
+        {
+            var result = _brandService.Delete(brand);
             if (result.Success)
             {
                 return Ok(result);
