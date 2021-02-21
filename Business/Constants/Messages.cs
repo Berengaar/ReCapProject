@@ -29,6 +29,7 @@ namespace Business.Constants
         internal static string Color = "Renk";
         internal static string Model = "Model";
         internal static string Rental = "Kiralama";
+        internal static string Brand = "Model";
         #endregion
 
     }

@@ -27,6 +27,7 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<List<Car>>(Messages.ErrorPrice);
             }
+            _carDal.Add(car);
             return new SuccessDataResult<List<Car>>(Messages.Car+Messages.Added);
         }
 
@@ -37,7 +38,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour == 12)
+            if (DateTime.Now.Hour == 11)
             {
                 return new ErrorDataResult<List<Car>>(Messages.Meintanance);
             }
@@ -46,7 +47,7 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            if (DateTime.Now.Hour == 1)
+            if (DateTime.Now.Hour == 16)
             {
                 return new ErrorDataResult<List<CarDetailDto>>(Messages.Meintanance);        
             }
