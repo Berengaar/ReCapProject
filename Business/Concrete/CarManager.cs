@@ -9,6 +9,10 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Linq;
+using FluentValidation;
+using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 { 
@@ -20,13 +24,10 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if (car.DailyPrice < 0)
-            {
-                return new ErrorDataResult<List<Car>>(Messages.ErrorPrice);
-            }
+            
             _carDal.Add(car);
             return new SuccessDataResult<List<Car>>(Messages.Car+Messages.Added);
         }
