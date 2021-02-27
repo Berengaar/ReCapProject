@@ -24,6 +24,7 @@ namespace Business.Constants
 
         #region Entities
         internal static string Car = "Araba";
+        internal static string CarImage = "Araba Resmi";
         internal static string User = "Kullanıcı";
         internal static string Customer = "Müşteri";
         internal static string Color = "Renk";
@@ -32,5 +33,7 @@ namespace Business.Constants
         internal static string Brand = "Model";
         #endregion
 
+
+        
     }
 }
