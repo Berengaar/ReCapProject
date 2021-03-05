@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Business.Constants
 {
-    public class FilePath
+    static public class NumberConstants
     {
-        public static string ImageDefaultPath = @"\wwwroot\NotImage.jpg";
+        internal static int LimitOfImage = 5;
     }
 }

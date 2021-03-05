@@ -1,8 +1,11 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspect;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
-using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,18 +20,19 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
+        [SecuredOperation("AddUser")]
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
         {
-            if (user.Password.Length <= 5)
-            {
-                return new ErrorDataResult<List<User>>(Messages.ErrorPassword);
-            }
-            return new SuccessDataResult<List<User>>(Messages.Added);
+            _userDal.Add(user);
+            return new SuccessResult(Messages.Added);
         }
 
-        public IResult Delete(User user, int userId)
+        [SecuredOperation("DeleteUser")]
+        public IResult Delete(User user)
         {
-            return new SuccessDataResult<List<User>>(Messages.User+Messages.Deleted);
+            _userDal.Delete(user);
+            return new SuccessResult(Messages.User+Messages.Deleted);
         }
 
         public IDataResult<List<User>> GetAll()
@@ -36,14 +40,26 @@ namespace Business.Concrete
             return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.User + Messages.Listed);
         }
 
-        public IDataResult<List<User>> GetUsersByUserId(int userId)
+        public List<OperationClaim> GetClaims(User user)
         {
-            return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.UserId == userId));
+            return new List<OperationClaim>(_userDal.GetClaims(user));
         }
 
+        public IDataResult<List<User>> GetById(int Id)
+        {
+            return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.Id == Id));
+        }
+
+        [SecuredOperation("UpdateUser")]
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Update(User user)
         {
-            return new SuccessDataResult<List<User>>(Messages.User+Messages.Updated);
+            _userDal.Update(user);
+            return new SuccessResult(Messages.User+Messages.Updated);
+        }
+        public User GetByMail(string email)
+        {
+            return _userDal.Get(u => u.Email == email);
         }
     }
 }

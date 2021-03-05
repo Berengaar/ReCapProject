@@ -1,6 +1,8 @@
-﻿using Entities.Concrete;
+﻿using Core.Entities.Concrete;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constants
@@ -20,6 +22,15 @@ namespace Business.Constants
         internal static string ErrorPassword = "Parola 5 karakterden az olamaz";
         internal static string ErrorPrice = "Araba fiyatı 0'dan büyük olmalıdır";
         internal static string ErrorRental = "Araba teslim edilmedi,kiranalamaz";
+        internal static string ErrorLimitExceeded = "Limit aşıldı";
+        internal static string ErrorUserNotFound = "Kullanıcı bulunamadı";
+        internal static string ErrorUserAlreadyExist = "Kullanıcı zaten mevcut";
+        #endregion
+
+        #region Successful
+        internal static string SuccessfulLogin = "Giriş başarılı";
+        internal static string SuccessfulRegister = "Kayıt başarılı";
+        internal static string SuccessfulCreatedToken = "Token oluşturma başarılı";
         #endregion
 
         #region Entities
@@ -31,9 +42,21 @@ namespace Business.Constants
         internal static string Model = "Model";
         internal static string Rental = "Kiralama";
         internal static string Brand = "Model";
+
+        #endregion
+
+        #region Validation 
+        internal static string NotEmpty = "Boş olamaz";
+        internal static string MinimumLength = "Karakter sayısı yetersiz";
+        internal static string EmailCheck = "Email Kontrol edildi";
+        internal static string AuthorizationDenied = "hata";
+        internal static string RentDateNull;
+        internal static string ReturnDate;
+        internal static string ModelNameLength;
+
         #endregion
 
 
-        
+
     }
 }

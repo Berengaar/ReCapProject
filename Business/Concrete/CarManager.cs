@@ -13,6 +13,7 @@ using FluentValidation;
 using Business.ValidationRules.FluentValidation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Aspects.Autofac.Validation;
+using Business.BusinessAspect;
 
 namespace Business.Concrete
 { 
@@ -24,17 +25,22 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
+        [SecuredOperation("member")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            
-            _carDal.Add(car);
-            return new SuccessDataResult<List<Car>>(Messages.Car+Messages.Added);
+            if (car.DailyPrice > 0)
+            {
+                _carDal.Add(car);
+                return new SuccessResult(Messages.Car + Messages.Added);
+            }
+            return new ErrorResult();    
         }
-
-        public IResult Delete(Car car,int carId)
-        {     
-            return new SuccessDataResult<List<Car>>(Messages.Car + Messages.Deleted);
+        [SecuredOperation("member")]
+        public IResult Delete(Car car)
+        {
+            _carDal.Delete(car);
+            return new SuccessResult(Messages.Car + Messages.Deleted);
         }
 
         public IDataResult<List<Car>> GetAll()
@@ -65,9 +71,12 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId));
         }
 
+        [SecuredOperation("member")]
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
-            return new SuccessDataResult<List<Car>>(Messages.Car + Messages.Updated);
+            _carDal.Update(car);
+            return new SuccessResult(Messages.Car + Messages.Updated);
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspect;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -9,6 +12,7 @@ using System.Text;
 
 namespace Business.Concrete
 {
+    [SecuredOperation("Administrator,Manager")]
     public class CustomerManager : ICustomerService
     {
         ICustomerDal _customerDal;
@@ -18,13 +22,18 @@ namespace Business.Concrete
             _customerDal = customerDal;
         }
 
-        public IDataResult<List<Customer>> Add(Customer customer)
+        [ValidationAspect(typeof(CustomerValidator))]
+        [SecuredOperation("AddCustomer")]
+        public IResult Add(Customer customer)
         {
+            _customerDal.Add(customer);
             return new SuccessDataResult<List<Customer>>(Messages.Customer+Messages.Added);
         }
 
-        public IDataResult<List<Customer>> Delete(Customer customer)
+        [SecuredOperation("DeleteCustomer")]
+        public IResult Delete(Customer customer)
         {
+            _customerDal.Delete(customer);
             return new SuccessDataResult<List<Customer>>(Messages.Customer+Messages.Deleted);
         }
 
@@ -33,8 +42,11 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Customer>>(_customerDal.GetAll());
         }
 
-        public IDataResult<List<Customer>> Update(Customer customer)
+        [ValidationAspect(typeof(CustomerValidator))]
+        [SecuredOperation("UpdateCustomer")]
+        public IResult Update(Customer customer)
         {
+            _customerDal.Update(customer);
             return new SuccessDataResult<List<Customer>>(Messages.Customer+Messages.Deleted);
         }
     }

@@ -11,7 +11,7 @@ namespace Business.ValidationRules.FluentValidation
         //Kurallar constructor metot içine yazılır
         public CarValidator()
         {
-            RuleFor(c => c.ModelId != 0);
+            RuleFor(c => c.ModelYear).NotEmpty();
             RuleFor(c => c.DailyPrice).GreaterThan(0);
             RuleFor(c => c.Description).NotEmpty();
         }

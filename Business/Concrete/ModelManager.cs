@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspect;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.Entity_Framework;
@@ -19,15 +22,19 @@ namespace Business.Concrete
         {
             _modelDal = modelDal;
         }
-
+        [ValidationAspect(typeof(ModelValidator))]
+        [SecuredOperation("AddModel")]
         public IResult Add(Model model)
         {
-            return new SuccessDataResult<List<Model>>(Messages.Model + Messages.Added);
+            _modelDal.Add(model);
+            return new SuccessResult(Messages.Model + Messages.Added);
         }
 
-        public IResult Delete(Model model, int modelId)
+        [SecuredOperation("DeleteModel")]
+        public IResult Delete(Model model)
         {
-            return new SuccessDataResult<List<Model>>(Messages.Model + Messages.Deleted);
+            _modelDal.Delete(model);
+            return new SuccessResult(Messages.Model + Messages.Deleted);
         }
 
         public IDataResult<List<Model>> GetAll()
@@ -52,10 +59,12 @@ namespace Business.Concrete
             }
             return new SuccessDataResult<List<ModelDetailDto>>(_modelDal.GetModelDetails());
         }
-
+        [ValidationAspect(typeof(ModelValidator))]
+        [SecuredOperation("UpdateModel")]
         public IResult Update(Model model)
         {
-            return new SuccessDataResult<List<Model>>(Messages.Model + Messages.Updated);
+            _modelDal.Update(model);
+            return new SuccessResult(Messages.Model + Messages.Updated);
         }
     }
 }
