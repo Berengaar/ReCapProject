@@ -43,3 +43,4 @@ namespace Core.Aspects.Autofac.Cashing
   
  * string.format():  
  * Nesnelerin değerini, belirtilen formatlara göre dizelere dönüştürür ve bunları başka bir dizeye ekler.
+ */
