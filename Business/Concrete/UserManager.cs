@@ -2,6 +2,7 @@
 using Business.BusinessAspect;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Cashing;
 using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
@@ -12,6 +13,7 @@ using System.Text;
 
 namespace Business.Concrete
 {
+    [SecuredOperation("Admin,Moderator")]
     public class UserManager : IUserService
     {
         IUserDal _userDal;
@@ -20,38 +22,41 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
-        [SecuredOperation("AddUser")]
+        
         [ValidationAspect(typeof(UserValidator))]
+        [CasheRemoveAspect("Add.User")]
         public IResult Add(User user)
         {
             _userDal.Add(user);
             return new SuccessResult(Messages.Added);
         }
 
-        [SecuredOperation("DeleteUser")]
+        
+        [CasheRemoveAspect("Delete.User")]
         public IResult Delete(User user)
         {
             _userDal.Delete(user);
             return new SuccessResult(Messages.User+Messages.Deleted);
         }
-
+        [CasheAspect]
         public IDataResult<List<User>> GetAll()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.User + Messages.Listed);
         }
-
+        [CasheAspect]
         public List<OperationClaim> GetClaims(User user)
         {
             return new List<OperationClaim>(_userDal.GetClaims(user));
         }
-
+        [CasheAspect]
         public IDataResult<List<User>> GetById(int Id)
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.Id == Id));
         }
 
-        [SecuredOperation("UpdateUser")]
+        
         [ValidationAspect(typeof(UserValidator))]
+        [CasheRemoveAspect("Update.User")]
         public IResult Update(User user)
         {
             _userDal.Update(user);

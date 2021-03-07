@@ -2,6 +2,7 @@
 using Business.BusinessAspect;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Cashing;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -23,25 +24,27 @@ namespace Business.Concrete
             _modelDal = modelDal;
         }
         [ValidationAspect(typeof(ModelValidator))]
-        [SecuredOperation("AddModel")]
+        [SecuredOperation("member,Add.Model")]
+        [CasheRemoveAspect("Add.Model")]
         public IResult Add(Model model)
         {
             _modelDal.Add(model);
             return new SuccessResult(Messages.Model + Messages.Added);
         }
 
-        [SecuredOperation("DeleteModel")]
+        [SecuredOperation("member,Delete.Model")]
+        [CasheRemoveAspect("Delete.Model")]
         public IResult Delete(Model model)
         {
             _modelDal.Delete(model);
             return new SuccessResult(Messages.Model + Messages.Deleted);
         }
-
+        [CasheAspect]
         public IDataResult<List<Model>> GetAll()
         {
             return new SuccessDataResult<List<Model>>(_modelDal.GetAll());
         }
-
+        [CasheAspect]
         public IDataResult<List<Model>> GetById(Model model)
         {
             if (Convert.ToInt32(model.ModelYear)<2000)
@@ -50,7 +53,7 @@ namespace Business.Concrete
             }
             return new SuccessDataResult<List<Model>>(_modelDal.GetAll(m => m.ModelId == model.ModelId));
         }
-
+        [CasheAspect]
         public IDataResult<List<ModelDetailDto>> GetModelDetails()
         {
             if (DateTime.Now.Hour == 1)
@@ -60,7 +63,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ModelDetailDto>>(_modelDal.GetModelDetails());
         }
         [ValidationAspect(typeof(ModelValidator))]
-        [SecuredOperation("UpdateModel")]
+        [SecuredOperation("member,Update.Model")]
+        [CasheRemoveAspect("Update.Model")]
         public IResult Update(Model model)
         {
             _modelDal.Update(model);
