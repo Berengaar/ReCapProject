@@ -71,9 +71,9 @@ namespace WebAPI.Controllers
             return BadRequest(result.Message);
         }
         [HttpPost("deletemodel")]
-        public IActionResult DeleteModel(Model model,int modelId)
+        public IActionResult DeleteModel(Model model)
         {
-            var result = _modelService.Delete(model,modelId);
+            var result = _modelService.Delete(model);
             if (result.Success)
             {
                 return Ok(result);

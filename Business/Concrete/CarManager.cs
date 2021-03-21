@@ -46,7 +46,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Car + Messages.Deleted);
         }
 
-        [SecuredOperation("member")]
+        
         [CasheAspect]
         public IDataResult<List<Car>> GetAll()
         {
