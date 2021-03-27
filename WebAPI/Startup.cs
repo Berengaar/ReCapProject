@@ -96,6 +96,7 @@ namespace WebAPI
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();       //Root'taki fotoðraflarý frontende taþýmak için
 
             app.UseRouting();
 

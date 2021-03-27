@@ -53,6 +53,8 @@ namespace Business.Constants
         internal static string RentDateNull;
         internal static string ReturnDate;
         internal static string ModelNameLength;
+        public static string CarNotFound = "Car not found";
+        internal static object ValidImageFileTypes;
 
         #endregion
 

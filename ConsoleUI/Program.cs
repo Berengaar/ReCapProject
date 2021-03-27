@@ -58,7 +58,7 @@ namespace ConsoleUI
         private static void DtoTest1()
         {
             CarManager carManager = new CarManager(new EfCarDal());
-            var result = carManager.GetCarDetails();
+            var result = carManager.GetAllCarsDetails();
             foreach (var detail in result.Data)
             {
                 Console.WriteLine("CarId : " + detail.CarId + " ----- " + "ColorId : " + detail.ColorId);

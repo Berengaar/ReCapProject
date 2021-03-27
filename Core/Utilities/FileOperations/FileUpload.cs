@@ -11,18 +11,41 @@ namespace Core.Utilities.FileOperations
     {
         public static string Add(IFormFile file)
         {
-            var temporaryFilePath = Path.GetTempFileName();     //Geçici dosya yolu oluşturuldu
-
-            if (file.Length > 0)
-            {
-                using (var stream = new FileStream(temporaryFilePath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-            }
             var result = newPath(file);
-            File.Move(temporaryFilePath, result);
-            return result;
+            try
+            {
+                var sourcePath = Path.GetTempFileName();
+                if (file.Length > 0)
+                    using (var stream = new FileStream(sourcePath, FileMode.Create))
+                        file.CopyTo(stream);
+                File.Move(sourcePath, result.newPath);
+            }
+            catch (Exception exception)
+            {
+                return exception.Message;
+            }
+            return result.Path2;
+        }
+
+        public static string Update(string sourcePath, IFormFile file)
+        {
+            var result = newPath(file);
+            try
+            {
+                if (sourcePath.Length > 0)
+                {
+                    using (var stream = new FileStream(result.newPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                }
+                File.Delete(sourcePath);
+            }
+            catch (Exception exception)
+            {
+                return exception.Message;
+            }
+            return result.Path2;
         }
 
         public static IResult Delete(string path)
@@ -39,30 +62,19 @@ namespace Core.Utilities.FileOperations
             return new SuccessResult();
         }
 
-        public static string Update(string temporaryFilePath, IFormFile file)
+        public static (string newPath, string Path2) newPath(IFormFile file)
         {
-            {
-                var result = newPath(file);
-                if (temporaryFilePath.Length > 0)
-                {
-                    using (var stream = new FileStream(result, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-                }
-                File.Delete(temporaryFilePath);
-                return result;
-            }
-        }
-        public static string newPath(IFormFile file)
-        {
-            FileInfo ff = new FileInfo(file.FileName);      
+            FileInfo ff = new FileInfo(file.FileName);
             string fileExtension = ff.Extension;
-            string path = Environment.CurrentDirectory + @"\Images";
-            var newPath = Guid.NewGuid().ToString() + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Year + fileExtension;
-            string result = $@"{path}\{newPath}";
-            return result;
-        }
 
+            var newPath = Guid.NewGuid() + fileExtension;
+
+
+            string path = Environment.CurrentDirectory + @"\wwwroot\uploads";
+
+            string result = $@"{path}\{newPath}";
+
+            return (result, $"\\uploads\\{newPath}");
+        }
     }
 }

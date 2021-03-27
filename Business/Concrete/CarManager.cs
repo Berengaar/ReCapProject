@@ -56,15 +56,28 @@ namespace Business.Concrete
             }
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.Car + Messages.Listed);
         }
+
         [CasheAspect]
-        public IDataResult<List<CarDetailDto>> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetAllCarsDetails()
         {
-            if (DateTime.Now.Hour == 16)
-            {
-                return new ErrorDataResult<List<CarDetailDto>>(Messages.Meintanance);        
-            }
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetAllCarDetails());
         }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsById(int carId)
+        {
+            var result = _carDal.GetAllCarDetails(c => c.CarId == carId);
+            if (result.Count == 0)
+            {
+                return new ErrorDataResult<List<CarDetailDto>>(new List<CarDetailDto>());
+            }
+            return new SuccessDataResult<List<CarDetailDto>>(result);
+        }
+
+        //[CasheAspect]
+        //public IDataResult<List<CarDetailDto>> GetCarDetailsById(int carId)
+        //{
+        //    return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsById(c=>c.CarId==carId));
+        //}
         [CasheAspect]
         public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {

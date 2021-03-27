@@ -16,11 +16,11 @@ namespace DataAccess.Concrete
         {
             _car = new List<Car>
             {
-                new Car {CategoryId=1,ModelYear="2018",DailyPrice=200000,Description="s" },
-                new Car {CategoryId=2,ModelYear="2019",DailyPrice=240000,Description="s" },
-                new Car {CategoryId=3,ModelYear="2020",DailyPrice=290000,Description="s" },
-                new Car {CategoryId=4,ModelYear="2014",DailyPrice=80000,Description="i" },
-                new Car {CategoryId=5,ModelYear="2012",DailyPrice=60000,Description="si" }
+                new Car {CategoryId=1,ModelYear="2018",DailyPrice=200000,BrandName="s" },
+                new Car {CategoryId=2,ModelYear="2019",DailyPrice=240000,BrandName="s" },
+                new Car {CategoryId=3,ModelYear="2020",DailyPrice=290000,BrandName="s" },
+                new Car {CategoryId=4,ModelYear="2014",DailyPrice=80000,BrandName="i" },
+                new Car {CategoryId=5,ModelYear="2012",DailyPrice=60000,BrandName="si" }
             };
         }
 
@@ -52,12 +52,22 @@ namespace DataAccess.Concrete
             throw new NotImplementedException();
         }
 
+        public List<CarDetailDto> GetAllCarDetails()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CarDetailDto> GetAllCarDetails(Expression<Func<Car, bool>> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Car> GetById(int id)
         {
             return _car.Where(c => c.CategoryId == id).ToList();
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public List<CarDetailDto> GetCarDetailsById(Expression<Func<Car, bool>> filter = null)
         {
             throw new NotImplementedException();
         }
@@ -68,7 +78,7 @@ namespace DataAccess.Concrete
             carToUpdate.CategoryId = car.CategoryId;
             
             carToUpdate.DailyPrice = car.DailyPrice;
-            carToUpdate.Description = car.Description;
+            carToUpdate.BrandName = car.BrandName;
 
         }
     }
